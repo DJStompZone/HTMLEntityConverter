@@ -1,0 +1,81 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: 'Release Version'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build:
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        build_platform: [x64, x86]
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v3
+
+    - name: MSBuild of solution
+      run: |
+        msbuild /t:Restore HTMLEntityConverter/HTMLEntityPlugin.sln
+        msbuild HTMLEntityConverter/HTMLEntityPlugin.sln /p:configuration="Release" /p:platform="${{ matrix.build_platform }}" /m /verbosity:minimal
+
+    - name: Archive artifacts for x64
+      if: matrix.build_platform == 'x64'
+      uses: actions/upload-artifact@v4
+      with:
+          name: CSharpPluginPack_x64
+          path: HTMLEntityConverter\bin\Release-x64\HTMLEntityConverter.dll
+
+    - name: Archive artifacts for x86
+      if: matrix.build_platform == 'x86'
+      uses: actions/upload-artifact@v4
+      with:
+          name: CSharpPluginPack_x86
+          path: HTMLEntityConverter\bin\Release\HTMLEntityConverter.dll
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Download x64 artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: HTMLEntityConverter_x64
+        path: ./release-artifacts/x64
+
+    - name: Download x86 artifact
+      uses: actions/download-artifact@v7
+      with:
+          name: HTMLEntityConverter_x86
+          path: ./release-artifacts/x86
+
+    - name: Zip Artifacts
+      run: |
+        cd ./release-artifacts/x64 && zip -r ../HTMLEntityConverter_x64.zip ./* && cd ../..
+        cd ./release-artifacts/x86 && zip -r ../HTMLEntityConverter_x86.zip ./* && cd ../..
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ github.event.inputs.version_tag }}
+        name: Release v${{ github.event.inputs.version_tag }}
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+        files: |
+          release-artifacts/HTMLEntityConverter_x64.zip
+          release-artifacts/HTMLEntityConverter_x86.zip
