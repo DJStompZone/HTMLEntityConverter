@@ -30,8 +30,8 @@ jobs:
 
     - name: MSBuild of solution
       run: >
-        msbuild /t:Restore HTMLEntityConverter/HTMLEntityPluigin.sln;
-        msbuild HTMLEntityConverter/HTMLEntityPluigin.sln /p:configuration="${{ matrix.build_configuration }}" /p:platform="${{ matrix.build_platform }}" /m /verbosity:minimal
+        msbuild /t:Restore HTMLEntityConverter/HTMLEntityPlugin.sln;
+        msbuild HTMLEntityConverter/HTMLEntityPlugin.sln /p:configuration="${{ matrix.build_configuration }}" /p:platform="${{ matrix.build_platform }}" /m /verbosity:minimal
 
     - name: Archive artifacts for x64
       if: matrix.build_platform == 'x64' && matrix.build_configuration == 'Release'
