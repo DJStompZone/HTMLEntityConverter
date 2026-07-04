@@ -23,7 +23,7 @@ jobs:
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
 
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v3.0.0
@@ -38,12 +38,12 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
           name: plugin_dll_x64
-          path: HTMLEntityConverter\bin\${{ matrix.build_configuration }}-x64\CSharpPluginPack.dll
+          path: HTMLEntityConverter\bin\${{ matrix.build_configuration }}-x64\HTMLEntityConverter.dll
 
     - name: Archive artifacts for x86
       if: matrix.build_platform == 'x86' && matrix.build_configuration == 'Release'
       uses: actions/upload-artifact@v7
       with:
           name: plugin_dll_x86
-          path: HTMLEntityConverter\bin\${{ matrix.build_configuration }}\CSharpPluginPack.dll
+          path: HTMLEntityConverter\bin\${{ matrix.build_configuration }}\HTMLEntityConverter.dll
 
