@@ -31,15 +31,15 @@ jobs:
       if: matrix.build_platform == 'x64'
       uses: actions/upload-artifact@v4
       with:
-          name: CSharpPluginPack_x64
-          path: HTMLEntityConverter\bin\Release-x64\HTMLEntityConverter_x64.dll
+          name: HTMLEntityConverter_x64
+          path: HTMLEntityConverter\bin\Release-x64\HTMLEntityConverter.dll
 
     - name: Archive artifacts for x86
       if: matrix.build_platform == 'x86'
       uses: actions/upload-artifact@v4
       with:
-          name: CSharpPluginPack_x86
-          path: HTMLEntityConverter\bin\Release\HTMLEntityConverter_x86.dll
+          name: HTMLEntityConverter_x86
+          path: HTMLEntityConverter\bin\Release\HTMLEntityConverter.dll
 
   release:
     needs: build
