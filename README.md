@@ -1,6 +1,6 @@
 # HTML Entity Converter
 
-[![Continuous Integration](https://github.com/djstompzone/htmlentityconverter/actions/workflows/CI_build.yml/badge.svg)](https://github.com/djstompzone/htmlentityconverter/actions/workflows/CI_build.yml)
+[![Continuous Integration](https://github.com/DJStompZone/HTMLEntityConverter/actions/workflows/CI_build.yml/badge.svg)](https://github.com/DJStompZone/HTMLEntityConverter/actions/workflows/CI_build.yml)
 
 [![License](http://img.shields.io/badge/License-Apache_2-red.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
